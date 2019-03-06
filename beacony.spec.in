@@ -1,0 +1,39 @@
+Name:           beacony
+Version:        @BASEVERSION@@EXTRAVERSION@
+Release:        1
+Summary:        AX.25 ham radio applications
+
+Group:          Applications/Communications
+License:        GPLv2+
+URL:            http://www.linux-ax25.org/
+Source0:        http://www.linux-ax25.org/pub/%{name}/%{name}-@VERSION@.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-@VERSION@-%{release}-root-%(%{__id_u} -n)
+
+%description
+This package provides beacony, an application that listens for AX.25 beacons.
+
+%prep
+%setup -q -n %{name}-@VERSION@
+
+%build
+%configure
+make %{?_smp_mflags}
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING README TODO
+%{_bindir}/*
+%{_sbindir}/*
+%{_mandir}/man?/*
+%{_docdir}/*
+
+%changelog
+* Mon Mar 5 2019 Jeff Baitis <jeff@baitis.net>
+- Initial version
