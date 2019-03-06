@@ -1,0 +1,8 @@
+Template: ax25-apps/suid_listen
+Type: boolean
+Default: false
+_Description: Make listen setuid root?
+ The listen program needs to make calls as the root user.  One way of doing
+ this is to make the program setuid root.  This is generally a bad idea as
+ there are better ways, such as using the sudo program, to do this.
+ However, you have the option of making it setuid root here if you like.

@@ -1,0 +1,46 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ax25-apps\n"
+"Report-Msgid-Bugs-To: ax25-apps@packages.debian.org\n"
+"POT-Creation-Date: 2010-04-18 19:15+0200\n"
+"PO-Revision-Date: 2004-03-22 19:32-0500\n"
+"Last-Translator: Carlos Valdivia <valyag@teleline.es>\n"
+"Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../templates:1001
+msgid "Make listen setuid root?"
+msgstr "¿Quiere hacer que listen se ejecute con permisos de root?"
+
+#. Type: boolean
+#. Description
+#: ../templates:1001
+msgid ""
+"The listen program needs to make calls as the root user.  One way of doing "
+"this is to make the program setuid root.  This is generally a bad idea as "
+"there are better ways, such as using the sudo program, to do this. However, "
+"you have the option of making it setuid root here if you like."
+msgstr ""
+"El programa listen necesita hacer llamadas como superusuario root. Una "
+"manera de lograrlo es hacer el programa setuid root. Normalmente, es una "
+"mala idea, ya que hay mejores alternativas, como usar el programa sudo. Sin "
+"embargo, tiene la opción de hacer que se ejecute con permisos de root "
+"(setuid root) si así lo desea."

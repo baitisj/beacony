@@ -1,0 +1,13 @@
+Beacony
+=======
+Based on AX25 Apps 0.0.8-rc4.
+I removed a lot of stuff and what's behind is this program.
+It listens to the AX25 interface and poops out beacons.
+And that's all it does!
+
+To build:
+autoreconf -fi
+./configure
+make
+
+-Jeff AG7EW, <jeff@baitis.net>; 3/5/2019

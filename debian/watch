@@ -1,0 +1,4 @@
+version=3
+opts=uversionmangle=s/-(rc\d*)$/~$1/,dversionmangle=s/\+cvs\S*$//;s/-(rc\d*)$/~$1/ \
+http://www.linux-ax25.org/pub/ax25-apps/ \
+(?:|.*/)ax25-apps(?:[_\-]v?|)(\d[^\s/]*)\.(?:tar\.xz|txz|tar\.bz2|tbz2|tar\.gz|tgz)

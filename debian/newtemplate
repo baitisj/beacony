@@ -1,0 +1,43 @@
+Template: ax25-apps/suid_listen
+Type: boolean
+Default: false
+Description: Make listen setuid root?
+ The listen program needs to make calls as the root user.  One way of doing
+ this is to make the program setuid root.  This is generally a bad idea as
+ there are better ways, such as using the sudo program, to do this.
+ However, you have the option of making it setuid root here if you like.
+Description-sv: GЖr "listen" setuid root?
+ Programmet listen mЕste gЖra anrop som root anvДndare. Ett sДtt att Еstakomma
+ detta Дr att gЖra programmet setuid root. Detta Дr generellt en dЕlig idИ,
+ eftersom det finns bДttre sДtt, sЕsom att anvДnda programmet sudo, fЖr att
+ gЖra detta. Du har dock mЖjlighet att gЖra programmet setuid root nu om du vill.
+Description-de: Soll das listen Programm setuid root laufen ?
+ Das listen Programm muss einige aufrufe als root Benutzer durchfЭhren.
+ Eine MЖglichkeit ist das Programm setuid root zu machen. Dies ist generell
+ eine schlechte Idee, da es bessere Wege gibt dies zu erreichen, z.B. mit
+ sudo. Jedoch kЖnnen Sie mit dieser Option das Programm setuid root installieren.
+Description-nl: Moet ik het listen programma setuid root maken?
+ Het listen programma loopt alleen goed als root gebruiker. 
+ Een manier om listen als root te runnen, is het suid bit te zetten.
+ Over het algemeen is dit een slecht idee omdat er betere manieren zijn,
+ bijvoorbeeld met het sudo programma. Je krijgt hier echter de mogelijkheid
+ om toch het suid bit te gebruiken.
+Description-es: ©Quiere hacer que listen se ejecute con permisos de root?
+ El programa listen necesita hacer llamadas como superusuario root. Una
+ manera de lograrlo es hacer el programa setuid root. Normalmente, es una
+ mala idea, ya que hay mejores alternativas, como usar el programa sudo.
+ Sin embargo, tiene la opciСn de hacer que se ejecute con permisos de root
+ (setuid root) si asМ lo desea.
+Description-pt_BR: Fazer com que o listen seja setuid root ?
+ O programa listen precisa fazer chamadas como o usuАrio root. Uma maneira
+ de fazer isso И fazer com que o programa seja setuid root. Isto И
+ geralmente uma mА idИia, pois existem melhores mИtodos para fazer isso,
+ como utilizar o programa sudo.
+ PorИm, vocЙ tem a opГЦo de fazЙ-lo setuid root aqui se vocЙ assim deseja.
+Description-ru: Хотите установить setuid root на listen?
+ Программа  listen  должны  вызываться  от  пользователя  root. Один из
+ способов  это  сделать  - установить setuid root на listen. Обычно это
+ плохая  идея,  так как существует лучший путь - использовать программу
+ sudo, чтобы это сделать. Однако, если хотите, можете установить setuid
+ root на listen сейчас.
+

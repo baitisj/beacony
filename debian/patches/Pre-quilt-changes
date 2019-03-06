@@ -1,0 +1,691 @@
+Description: Changes made before quilt
+
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25ipd/ax25ipd.8
+@@ -0,0 +1,80 @@
++.TH AX25IPD 8 "12 September 2001" Linux "Linux Programmer's Manual"
++.SH NAME
++ax25ipd \- AX.25 into IP Encapsulator
++.SH SYNOPSIS
++.B ax25ipd [options]
++.SH DESCRIPTION
++.LP
++.B ax25ipd
++is an RFC1226 compliant daemon capable of providing the encapsualtion
++necessary to send and receive AX.25 traffic across an IP transport.
++.LP
++Normally invoked as part of the boot order network initialisation,
++.B ax25ipd
++is capable of talking directly to a serial port connected tnc, or over
++a pipe to a linux AX.25 port. KAM DE Dual Port Kiss is also supported.
++.LP
++.B ax25ipd
++can be run as a pure encapsulator, or as a digital repeater with a
++functional callsign. Destination IP addresses are determined from a
++hardcoded map of callsign/IP Address pairs.
++.LP
++.B ax25ipd
++defaults to using
++.B /etc/ax25/ax25ipd.conf
++as its config file.
++.LP
++.SH OPTIONS
++.TP 10
++.BI \-v,--version
++Display the version.
++.TP 10
++.BI \-h,--help
++Display a summary of the command line options.
++.TP 10
++.BI \-l,--loglevel NUM
++Set the logging level to NUM.
++.TP 10
++.BI \-c,--configfile FILE
++Use the configuration file named by FILE instead of the default.
++.TP 10
++.BI \-d,--ttydevice TTYDEV
++Use ttydevice instead of the configured. This is useful because on systems
++with unix98 PTYs the device is allocated dynamicaly and thus the name is
++not predictable.
++.TP 10
++.BI \-f,--nofork
++Do not become a daemon. Run in foreground.
++.SH FILES
++/etc/ax25/ax25ipd.conf
++.SH "SEE ALSO"
++.BR ax25ipd.conf (5),
++.BR beacon (1),
++.BR ax25 (4),
++.BR netrom (4),
++.BR rose (4),
++.BR kissattach (8).
++.LP
++.SH BUGS
++Routing needs to be looked at seriously, the method of routing is a real
++hack, and improvements to it have only added to the hack.
++.LP
++Logging needs to be properly implemented.
++.LP
++Command line parsing needs to be properly implemented.
++.LP
++.B ax25ipd
++should be part of the Linux AX.25 kernel support probably :-)
++.SH AUTHORS
++.nf
++Michael Westerhof <Mike.Westerhof@Central.Sun.COM> <invalid address>
++.br
++Michael Durrant VE3PNX <mdurrant@arcturusnetworks.com>
++.br
++D. Jeff Dionne VE3DJF <Jeff@lnx_rpi.ee.ryerson.ca>
++.br
++Rob Mayfield VK5XXX/VK5ZEU <mayfieldrob@mail.dec.com>
++.br
++Terry Dawson VK2KTJ <terry@animats.net>
++.br
++.fi
+--- ax25-apps-0.0.8-rc4.orig/ax25ipd/ax25ipd.conf
++++ ax25-apps-0.0.8-rc4/ax25ipd/ax25ipd.conf
+@@ -49,7 +49,7 @@ mode tnc
+ # As serial port, you could assign physical ports like ttyS0 or ptys.
+ # ax25ipd  supports  BSD-style  pseudo-terminals as well as the Unix98 pty's.
+ # If the tty argument is "/dev/ptmx", then Unix98 behaviour
+-# will automaticaly take effekt. With Unix98 pty's, the slave tty name
++# will automatically take effect. With Unix98 pty's, the slave tty name
+ # could not be forseen. That's why ax25ipd will print the corresponding
+ # slave pty name as a separate line on stdout.
+ # 
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25ipd/ax25ipd.conf.5
+@@ -0,0 +1,205 @@
++.TH AX25IPD.CONF 5 "7 July 1997" Linux "Linux Programmer's Manual"
++.SH NAME
++ax25ipd.conf \- Control the operation of ax25ipd.
++.SH DESCRIPTION
++.LP
++The
++.B ax25ipd.conf
++file controls the operation of the ax25ipd(8) program. The operation of the
++config file can best be seen in an example:
++.LP
++#
++.br
++# ax25ipd configuration file for station floyd.vk5xxx.ampr.org
++.br
++#
++.br
++# Select axip transport. 'ip' is what you want for compatibility
++.br
++# with most other gates ...
++.br
++#
++.br
++socket ip
++.br
++#
++.br
++# Set ax25ipd mode of operation. (digi or tnc)
++.br
++#
++.br
++mode tnc
++.br
++#
++.br
++# If you selected digi, you must define a callsign.  If you selected
++.br
++# tnc mode, the callsign is currently optional, but this may change
++.br
++# in the future! (2 calls if using dual port kiss)
++.br
++#
++.br
++# mycall vk5xxx-4
++.br
++# mycall2 vk5xxx-5
++.br
++#
++.br
++# In digi mode, you may use an alias. (2 for dual port)
++.br
++#
++.br
++# myalias svwdns
++.br
++# myalias2 svwdn2
++.br
++#
++.br
++# Send an ident every 540 seconds ...
++.br
++#
++.br
++# beacon after 540
++.br
++# btext ax25ip -- tncmode rob/vk5xxx -- Experimental AXIP gateway
++.br
++#
++.br
++# Serial port, ethertap interface, or pipe connected to a kissattach in my case
++.br
++# alternatively, if you have the kernel module bpqether:
++.br
++# if you use tun/tap or ethertap instead of kissattach you may say, without
++.br
++# leading slashes (!! - that's how ax25ipd consideres using the tty kiss
++.br
++# driver or tun/tap or ethertap):
++.br
++#   with tun/tap:
++.br
++#     device foobar
++.br
++#   with ethertap (obsolete):
++.br
++#     device tap0
++.br
++# make sure you set a mycall above, or say axparms foobar -setcall te1st
++.br
++# note: the device will be up when you assign an ip address
++.br
++# _after_ starting ax25rtd (which initializes the device), start ax25d
++.br
++# with bpqether or pty, you do not need to care about the speed
++.br
++# tun/tap: as descriped in /usr/src/linux/Documentatioa/networking/tuntap.txt,
++.br
++# make a device # like this:
++.br
++#   crw-r--r--    1 root     root      10, 200 Nov 26 13:32 tun
++.br
++# with the command mknod /dev/net/tun c 10 200
++.br
++# As serial port, you could assign physical ports like ttyS0 or ptys.
++.br
++# ax25ipd supports BSD-style pseudo-terminals as well as the Unix98 pty's.
++.br
++# If the tty argument is "/dev/ptmx", then Unix98 behaviour
++.br
++# will automatically take effect. With Unix98 pty's, the slave tty name
++.br
++# could not be forseen. That's why ax25ipd will print the corresponding
++.br
++# slave pty name as a separate line on stdout.
++.br
++#
++.br
++#device ampr
++.br
++device /dev/ttyp0
++.br
++#
++.br
++# Set the device speed
++.br
++#
++.br
++speed 9600
++.br
++#
++.br
++# loglevel 0 - no output
++.br
++# loglevel 1 - config info only
++.br
++# loglevel 2 - major events and errors
++.br
++# loglevel 3 - major events, errors, and AX25 frame trace
++.br
++# loglevel 4 - all events
++.br
++# log 0 for the moment, syslog not working yet ...
++.br
++#
++.br
++loglevel 4
++.br
++#
++.br
++# If we are in digi mode, we might have a real tnc here, so use param to
++.br
++# set the tnc parameters ...
++.br
++#
++.br
++# param 1 20
++.br
++#
++.br
++# Broadcast Address definition. Any of the addresses listed will be forwarded
++.br
++# to any of the routes flagged as broadcast capable routes.
++.br
++#
++.br
++broadcast QST-0 NODES-0
++.br
++#
++.br
++# ax.25 route definition, define as many as you need.
++.br
++# format is route (call/wildcard) (ip host at destination)
++.br
++# ssid of 0 routes all ssid's
++.br
++#
++.br
++# route <destcall> <destaddr> [flags]
++.br
++#
++.br
++# Valid flags are:
++.br
++#         b  - allow broadcasts to be transmitted via this route
++.br
++#         d  - this route is the default route
++.br
++#
++.br
++route vk2sut-0 44.136.8.68 b
++.br
++route vk5asf 44.136.188.221 b
++.br
++route vk2abc 44.1.1.1 d
++.br
++#
++.br
++#
++.br
++.LP
++More to come ...
++.SH FILES
++.LP
++/etc/ax25/ax25ipd.conf
++.SH "SEE ALSO"
++.BR ax25ipd (8).
+--- ax25-apps-0.0.8-rc4.orig/ax25ipd/ax25ipd.conf.man
++++ ax25-apps-0.0.8-rc4/ax25ipd/ax25ipd.conf.man
+@@ -106,7 +106,7 @@ mode tnc
+ .br
+ # If the tty argument is "/dev/ptmx", then Unix98 behaviour
+ .br
+-# will automaticaly take effekt. With Unix98 pty's, the slave tty name
++# will automatically take effect. With Unix98 pty's, the slave tty name
+ .br
+ # could not be forseen. That's why @@@ax25ipd@@@ will print the corresponding
+ .br
+--- ax25-apps-0.0.8-rc4.orig/ax25ipd/ax25ipd.man
++++ ax25-apps-0.0.8-rc4/ax25ipd/ax25ipd.man
+@@ -1,4 +1,4 @@
+-.TH @@@AX25IPD@@@ 1 "12 September 2001" Linux "Linux Programmer's Manual"
++.TH @@@AX25IPD@@@ 8 "12 September 2001" Linux "Linux Programmer's Manual"
+ .SH NAME
+ @@@ax25ipd@@@ \- AX.25 into IP Encapsulator
+ .SH SYNOPSIS
+@@ -7,7 +7,7 @@
+ .LP
+ .B @@@ax25ipd@@@
+ is an RFC1226 compliant daemon capable of providing the encapsualtion
+-neccessary to send and receive AX.25 traffic across an IP transport.
++necessary to send and receive AX.25 traffic across an IP transport.
+ .LP
+ Normally invoked as part of the boot order network initialisation,
+ .B @@@ax25ipd@@@
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25mond/ax25mond.8
+@@ -0,0 +1,19 @@
++.TH AXCALL 8 "30 January 1999" Linux "Linux System Managers Manual"
++.SH NAME
++axcall \- dump the AX.25 network traffic and and provide sockets
++where the received data will be retransmitted
++.SH SYNOPSIS
++.B axcall [-v|--version]
++.SH DESCRIPTION
++.LP
++.B Ax25mond
++will first read it's configuration file /etc/ax25/ax25mond.conf. It will
++then wait for connects on the sockets specified in this file. When
++connected, it will transmit all data which it has received on the AX.25
++monitor socket.
++.SH OPTIONS
++.TP 15
++.BI "\-v, \-\-version"
++Displays the version number and some copyright information.
++.SH AUTHOR
++Johann Hanne, DH3MB <jonny@baycom.org>
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25mond/ax25mond.conf.5
+@@ -0,0 +1,30 @@
++.TH AX25MOND.CONF 5 "30 January 1999" Linux "Linux Programmer's Manual"
++.SH NAME
++ax25mond.conf \- Specify the sockets which axcall will provide.
++.SH DESCRIPTION
++.LP
++The
++.B ax25mond.conf
++file specifies the internet- and unix-sockets which axcall(8)
++will provide. Example:
++.LP
++# Create an internet socket on port 1234 where all the
++.br
++# AX.25 traffic will be transmitted
++.br
++rxtx *:1234
++.br
++# Create an unix socket where only the received AX.25
++.br
++# traffic will be transmitted
++.br
++rx unix:/var/spool/ax25/monitor
++.br
++.LP
++You may specify up to 5 sockets (definable in ax25mond.c) and axcall
++will accept up to 50 connects (also definable in ax25mond.c).
++.SH FILES
++.LP
++/etc/ax25/ax25mond.conf
++.SH "SEE ALSO"
++.BR axcall (8).
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25rtd/ax25rtctl.8
+@@ -0,0 +1,76 @@
++.TH AX25RTCTL 8 "11 November 2003" Linux "Linux Programmer's Manual"
++.SH NAME
++ax25rtctl \- AX.25 routing control program
++.SH SYNOPSIS
++.B ax25rtctl [options]
++.SH DESCRIPTION
++.LP
++.B ax25rtctl
++is a program to control ax25rtd. There are several options:
++.TP
++.B -a, --add ax25 <callsign> <dev> <time> [digipeater]
++Add an entry to the AX.25 routing table. If time is "0"
++this entry will be marked permanent, hence: the daemon will not
++overwrite this route.
++.TP
++.B -d, --del ax25 <callsign> <dev>
++Remove an entry from the AX.25 routing table.
++.TP
++.B -a, --add ip <ip> <dev> <time> <call> <ipmode>
++Add an entry to the IP routing table. If time is "0" the
++entry will be marked permanent.
++.TP
++.B -d, --del ip <ip>
++Remove an entry from the IP routing table.
++.TP
++.B -l, --list ax25
++Lists the content of the cache for the AX.25 routing table.
++.TP
++.B -l, --list ip
++Lists the content of the cache for the IP routing table.
++.TP
++.B -e, --expire <minutes>
++Removes the entries older than <minutes> from the caches and
++the kernel routing tables.
++.TP
++.B -s, --save
++Saves the AX.25 and IP cache to /var/ax25/ax25rtd/ax25_routes and
++/var/ax25/ax25rtd/ip_routes (or the files specified in
++/etc/ax25/ax25rtd.conf).
++.TP
++.B -r, --reload
++Reloads the config file /etc/ax25/ax25rtd.conf. This will
++*not* affect the caches or the heard list.
++.TP
++.B -q, --shutdown
++Same as 'killall -TERM ax25rtd' ;-)
++.TP
++.B -V, --version
++Prints version.
++.PP
++Note that you can specify either the port name (as defined in
++/etc/ax25/axports) or the interface name (shown by ifconfig). If names
++conflict (i.e. port scc0 is in fact interface scc3, and vica versa), the
++interface name has precedence over the port name.  Example:
++
++   ax25rtctl --add ax25 dl0tha scc3 0 db0pra
++
++is equivalent to
++
++   ax25rtctl --add ax25 dl0tha 9k6 0 dbpra
++
++All commands return port names in their output, though.
++With one exception: ax25_routes and ip_routes use interface names.
++
++.SH FILES
++/etc/ax25/ax25rtd.conf
++.SH "SEE ALSO"
++.BR ax25rtd.conf (5),
++.BR ax25rtd (8).
++.LP
++.SH AUTHORS
++.nf
++Joerg Reuter <jreuter@poboxes.com>
++.br
++Llaus Kudielka OE1KIB
++.fi
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25rtd/ax25rtd.8
+@@ -0,0 +1,45 @@
++.TH AX25RTD 8 "11 November 2003" Linux "Linux Programmer's Manual"
++.SH NAME
++ax25rtd \- AX.25 routing daemon
++.SH SYNOPSIS
++.B ax25rtd
++.SH DESCRIPTION
++.LP
++.B ax25rtd
++is a daemon that:
++.LP
++- emulates the ceased "autorouter" of Linux Kernel AX.25
++.br
++- sets up ARP entries automagically
++.br
++- may adjust IP routes and encapsulation mode 
++  (although I really do not recomment to use this feature...)
++.LP
++The "autorouter" is not really an autorouter. It just listens to the AX.25
++traffic on your ports and uses this information to setup AX.25 routes. This
++can be turned on or off by altering the configuration file
++/etc/ax25/ax25rtd.conf.
++.LP
++Ax25rtd provides a socket /var/ax25/ax25rtd/control which is used for
++runtime maintenance through
++.B ax25rtctl 
++or to set up new routes by other
++daemons (a Flexnet router, perhaps?)
++.LP
++On startup ax25rtd reads the configuration file and afterwards preloads
++the caches from the files /var/ax25/ax25rtd/ax25_routes and
++/var/ax25/ax25rtd/ip_routes. On SIGTERM or 
++.B ax25rtctl --save 
++it saves the caches to those files.
++.SH FILES
++/etc/ax25/ax25rtd.conf
++.SH "SEE ALSO"
++.BR ax25rtd.conf (5),
++.BR ax25rtctl (8).
++.LP
++.SH AUTHORS
++.nf
++Joerg Reuter <jreuter@poboxes.com>
++.br
++Llaus Kudielka OE1KIB
++.fi
+--- /dev/null
++++ ax25-apps-0.0.8-rc4/ax25rtd/ax25rtd.conf.5
+@@ -0,0 +1,144 @@
++.TH AX25RTD.CONF 5 "11 November 2003" Linux "Linux Programmer's Manual"
++.SH NAME
++ax25rtd.conf \- ax25 routing daemon configuration file
++.SH SYNOPSIS
++.B /etc/ax25/ax25rtd.conf
++.SH DESCRIPTION
++
++
++The file /etc/ax25/ax25rtd.conf is the configuration file for ax25rtd.
++The parameters of the options shown here are the default values except the
++ones marked with (example)
++.PP
++ax25-maxroutes	4096
++.TP
++ip-maxroutes	4096
++The maximum size of the three lists / caches. On overflow,
++ax25rtd will substitute the oldest entry with the new one.
++.TP
++iproute2-table radio
++
++name ("radio") of the kernel routing table. This is an advanced
++routing feature. If you do not need it, just leave this setting as is.
++
++The current implementation  depends on iproute2 (anyone like to code it
++directly?).
++
++If not set or empty, routes are set in the normal, default, manner.
++Please configure /etc/iproute2/rt_protos with
++
++  44      ax25rtd
++
++and /etc/iproute2/rt_tables with
++
++  210     radio
++
++where "radio" is the name of the table, (for the configuration example above).
++
++This option is disabled by default.
++.TP
++ip-encaps-dev ipax0
++This option was for a patched kernel of the 2.2.x series. Multible interfaces
++were aggregated to one interface when sending IP frames. This option is
++disabled by default.
++.TP
++[1k2]
++.br
++This marks the beginning of per-port definitions. Note that
++you have to use port names as defined in axports(5) here,
++anywhere else you may use the port or the device name.
++.TP
++ax25-learn-routes no
++Set this to "yes", ax25rtd will add the routing information
++for every heard frame (with complete digipeater path) to the 
++kernel AX.25 routing table. Note that ax25rtd's internal cache
++will be updated anyway, regardless of this option.
++.TP
++ax25-learn-only-mine no
++If you set it to "yes", only frames that are sent to (1) the
++interface callsign, (2) any of the listeners on this device, or
++(3) the callsigns specified by ax25-more-mycalls will be used
++to update the internal cache and (depending on
++ax25-learn-routes) the kernel routing table.
++.TP
++ax25-add-path db0ach	(example)
++This is useful on DAMA digipeaters. In this case, the DAMA
++master has to be used for _every_ AX.25 connection, thus
++ax25rtd will add this digipeater(s) to every target we learn
++that has no digipeater path (yet). "db0ach" is just an
++example here.
++.TP
++ax25-more-mycalls dl1bke dl1bke-8	(example)
++You can specify more calls as calls here that belong to
++this interface... "dl1bke" and "dl1bke-8" are examples.
++.TP
++ip-learn-routes no
++If set to "yes", ax25rtd will modify the IP routing table if it
++receives an IP frame (directed to us). This is dangerous!
++
++It should not screw up your routing table, though. Ax25rtd 
++recognizes the netmask of the device and will adjust the route 
++only if it fits the netmask and the old route points to
++one of the devices ax25rtd knows about (hence an AX.25 device).
++
++The problems begin if you have more than one port and a user
++is able to hear your outgoing traffic on at least two of them. 
++Due to technical reasons ax25rtd adjusts the route _after_ the 
++kernel has sent the reply to the received TCP frame already.  
++This has technical reasons. 
++
++If the remote does the same both are switching between the two
++ports.
++
++Don't use this feature unless you know what you are doing.
++
++It _should_ be safe do enable this on one-port machines, although
++I strongly recommend to set a network route instead, i.e.:
++
++        route add -net 44.0.0.0 scc3
++
++Note that ax25rtd's internal cache will be updated anyway,
++regardless of this option.
++.TP
++irtt <irtt>
++If ip-learn-routes is enabled this will assign newly added
++routes an initial round trip time (IRTT) for TCP. <irtt>
++is measured in msec, hence
++
++        irtt 10000
++
++sets the irtt to 10 seconds. A value of 0 disables this
++feature (default).
++.TP
++ip-adjust-mode no
++If you set this option to "yes" ax25rtd will change the IP
++encapsulation mode according to the last received IP frame.
++
++The problem with this option is that the kernel AX.25 sends
++a received IP frame to the IP layer regardless if it was
++sent in UI frame encapsulation "mode datagram (dg)" or 
++in I frame encaps, hence in an AX.25 connection, "mode virtual 
++connect (vc)". The Linux kernel will respond to this frame
++before ax25rtd can adjust the mode. If the remote does the
++same... You get the picture.
++
++Don't use this feature unless you know what you are doing.
++.TP
++arp-add	no
++This option, if set to "yes", changes the ARP table to the 
++source callsign of the received frame. It should be harmless,
++just has the the effect that if it is a new entry, the Linux
++ARP code will send one ARP request before ax25rtd has adjust
++the ARP table. If there was already an existing ARP entry
++for this IP route, one IP datagram will be sent to the old
++address. Not really a problem, I hope.
++.SH "SEE ALSO"
++.BR ax25rtd (8),
++.BR ax25rtctl (8).
++.LP
++.SH AUTHORS
++.nf
++Joerg Reuter <jreuter@poboxes.com>
++.br
++Llaus Kudielka OE1KIB
++.fi
+--- ax25-apps-0.0.8-rc4.orig/ax25rtd/ax25rtd.man
++++ ax25-apps-0.0.8-rc4/ax25rtd/ax25rtd.man
+@@ -21,7 +21,7 @@ can be turned on or off by altering the
+ /etc/ax25/ax25rtd.conf.
+ .LP
+ @@@Ax25rtd@@@ provides a socket /var/ax25/ax25rtd/control which is used for
+-runtime maintainance through
++runtime maintenance through
+ .B @@@ax25rtctl@@@ 
+ or to set up new routes by other
+ daemons (a Flexnet router, perhaps?)
+--- ax25-apps-0.0.8-rc4.orig/call/call.h
++++ ax25-apps-0.0.8-rc4/call/call.h
+@@ -18,4 +18,4 @@ extern void cmd_yapp(char *, int);
+ /* In dostime.c */
+ extern void date_unix2dos(time_t, unsigned short*, unsigned short*);
+ extern int yapp2unix(char *);
+-extern void unix2yapp( int, char *);
++extern void unix2yapp( time_t, char *);
+--- ax25-apps-0.0.8-rc4.orig/call/call.man
++++ ax25-apps-0.0.8-rc4/call/call.man
+@@ -79,7 +79,7 @@ This is useful for scripting where you j
+ Be silent. Useful for using @@@call@@@ in shellscripts (together with option \-r) in order to be really transparent.
+ .TP 10
+ .BI "\-T timeout"
+-Set idle timeout seconds after a connection will be closed automaticaly when there's no data being transferred (in- and outbound). If timeout is set to 3600, the connection will close after 1h inactivity. A value of 0.5 is 500ms.
++Set idle timeout seconds after a connection will be closed automatically when there's no data being transferred (in- and outbound). If timeout is set to 3600, the connection will close after 1h inactivity. A value of 0.5 is 500ms.
+ .TP 10
+ .BI \-r
+ Selects Raw mode.

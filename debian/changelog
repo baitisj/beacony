@@ -1,0 +1,343 @@
+ax25-apps (0.0.8-rc4-2build1) xenial; urgency=medium
+
+  * No-change rebuild for ncurses6 transition.
+
+ -- Matthias Klose <doko@ubuntu.com>  Sun, 07 Feb 2016 09:39:24 +0000
+
+ax25-apps (0.0.8-rc4-2) unstable; urgency=medium
+
+  * debian/control:
+   - Change architecture to linux-any.
+   - Removed inactive uploaders.
+
+ -- Iain R. Learmonth <irl@debian.org>  Mon, 14 Sep 2015 00:29:00 +0100
+
+ax25-apps (0.0.8-rc4-1) unstable; urgency=medium
+
+  * New upstream version.
+  * debian/control:
+   - Switch to debhelper >= 9
+   - Removed redundant Build-Depends:
+    * dpkg-dev
+    * autoconf
+    * automake
+   - Removed inactive uploaders:
+    * Jaime Robles
+    * Hamish Moffat (by request)
+   - Added myself to uploaders
+   - Added Homepage
+   - Added Vcs-* for pkg-hamradio Git
+   - Bump Standards-Version to 3.9.6
+  * debian/watch:
+   - Added from sepwatch
+  * debian/compat:
+   - Bump to 9
+  * debian/{config,postinst}:
+   - Added "set -e"
+  * Source format switched to 3.0 (quilt)
+
+ -- Iain R. Learmonth <irl@debian.org>  Wed, 09 Sep 2015 15:57:29 +0100
+
+ax25-apps (0.0.8-rc2+cvs20130510-4) unstable; urgency=medium
+
+  * Bump Standards Version.
+  * Fix section for ax25ipd manpage.
+  * Fix def of unix2yapp() (Closes: #749606)
+  * Minor spelling fixes.
+
+ -- Colin Tuckley <colint@debian.org>  Mon, 08 Sep 2014 21:08:51 +0100
+
+ax25-apps (0.0.8-rc2+cvs20130510-3) unstable; urgency=low
+
+  * Move to dh_autoreconf 
+  * Add build depends for autotools
+
+ -- Patrick Ouellette <pouelle@debian.org>  Sat, 11 May 2013 12:26:12 -0400
+
+ax25-apps (0.0.8-rc2+cvs20130510-2) unstable; urgency=low
+
+  * Fix build failure on buildd (autoreconf call)
+
+ -- Patrick Ouellette <pouelle@debian.org>  Sat, 11 May 2013 11:53:32 -0400
+
+ax25-apps (0.0.8-rc2+cvs20130510-1) unstable; urgency=low
+
+  * License changed to BSD license for listen/ripdump.c (Closes: #630893)
+  * Updated standards version to 3.9.4
+  * Added use of hardening flags to debian/rules for compilation
+
+ -- Patrick Ouellette <pouelle@debian.org>  FrI, 10 May 2013 11:13:29 -0400
+
+ax25-apps (0.0.8-rc2+cvs20120204-2) unstable; urgency=low
+
+  * Fix "ax25ipd: fails to transmit packets with "assemble_kiss: dumped
+    - control byte non-zero"" fixed in new upstream
+    (Closes: #606338)
+  * Fix pending l10n issues. Debconf translations:
+  * Italian (Vincenzo Campanella).  Closes: #593666
+  * Danish (Joe Hansen).  Closes: #627843
+  * Polish (Michał Kułach).  Closes: #659128
+  * Fix "Uses absolute path to call dpkg-statoverride" change check for
+    - dpkg-statoverride from test to hash (Closes: #510947)
+
+ -- Patrick Ouellette <pouelle@debian.org>  Sun, 26 Feb 2012 20:46:29 -0500
+
+ax25-apps (0.0.8-rc2+cvs20120204-1) unstable; urgency=low
+
+  * new upstream
+
+ -- Patrick Ouellette <pouelle@debian.org>  Sat, 04 Feb 2012 22:03:45 -0500
+
+ax25-apps (0.0.6-16.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Bump debherlper compatibility level from deprecated 4 to 7
+  * As a consequence, replace deprecated "dh_clean -k" by "dh_prep"
+  * Add ${misc:Depends} to binary package dependencies to deal with
+    dependencies triggerred by the use of debhelper
+  * Explicitly point to the GPL-2 document in debian/copyright
+  * Explicitly use 1.0 source format
+  * No longer hardcode dpkg-statoverride path in postinst
+  * Fix pending l10n issues. Debconf translations:
+    - Russian (Yuri Kozlov).  Closes: #533876
+    - Vietnamese (Clytie Siddall).  Closes: #579224
+
+ -- Christian Perrier <bubulle@debian.org>  Sun, 25 Apr 2010 07:49:02 +0200
+
+ax25-apps (0.0.6-16.1) unstable; urgency=low
+
+  * Retiring - remove myself from the uploaders list.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Tue, 10 Nov 2009 10:10:10 +0000
+
+ax25-apps (0.0.6-16) unstable; urgency=low
+
+  * Also rename the listen manual page to axlisten. Closes: #447315.
+  * Adapt description in the control file.
+  * Fix axlisten manual page, so we refer to axcall.
+  * Do not call dh_installman.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Sat, 01 Dec 2007 20:57:33 +0100
+
+ax25-apps (0.0.6-15) unstable; urgency=low
+
+  * Add missing 'missing' and 'depcomp'.
+  * Run aclocal, automake autoconf and libtoolize again.
+  * Listen is now called axlisten (closes: #447315), call is called
+    axcall. Names were to generic. Adopt manpages.
+  * ax25ipd/Makefile.am: use AM_CFLAGS instead of CFLAGS.
+  * debian/menu: new menu section, 'Amateur Radio'.
+  * Lintian clean.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Sun, 11 Nov 2007 19:40:53 +0100
+
+ax25-apps (0.0.6-14.1) unstable; urgency=low
+
+  * Non-maintainer upload to fix pending l10n issues.
+  * Debconf translations:
+    - Convert files to UTF-8
+    - Portuguese. Closes: #389649
+    - Galician. Closes: #412342
+
+ -- Christian Perrier <bubulle@debian.org>  Mon, 26 Feb 2007 07:31:59 +0100
+
+ax25-apps (0.0.6-14) unstable; urgency=low
+
+  * Remove build-dependency on autoconf, automake and libtool
+    (closes: #376334)
+  * Tidy up description.
+  * Upgrade to standards-revision 3.7.2.
+  * Upgrade to debhelper revision 4.
+
+ -- Hamish Moffatt <hamish@debian.org>  Mon,  3 Jul 2006 08:42:54 +1000
+
+ax25-apps (0.0.6-13) unstable; urgency=low
+
+  * Close an already fixed bug. Closes: #321497.
+  * Update config.guess, config.sub. Closes: #356363.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Sun, 19 Mar 2006 22:00:24 +0100
+
+ax25-apps (0.0.6-12) unstable; urgency=low
+
+  * Changed debconf dependency to "debconf | debconf-2.0"
+    to allow use with cdebconf
+  * Updated standards-revision to 3.6.2
+
+ -- Hamish Moffatt <hamish@debian.org>  Fri,  2 Sep 2005 09:14:18 +1000
+
+ax25-apps (0.0.6-11) unstable; urgency=low
+
+  * adds --update to postinst dpkg-statoverride call.  Closes #321497.
+
+ -- Patrick A. Ouellette <pouelle@debian.org>  Mon,  8 Aug 2005 23:05:35 -0400
+
+ax25-apps (0.0.6-10) unstable; urgency=low
+
+  * Vietnamese translations for debconf. Closes: #313139.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Mon, 11 Jul 2005 21:33:33 +0200
+
+ax25-apps (0.0.6-9) unstable; urgency=low
+
+  * Changed maintainer to debian-hams@lists.debian.org
+  * Changed uploaders to Jaime Robles <jaime@debian.org>,
+    Joop Stakenborg <pa3aba@debian.org>,
+    Patrick Ouellette <pouelle@debian.org>,
+    Hamish Moffatt <hamish@debian.org>,
+    Ramakrishnan Muthukrishnan <rkrishnan@debian.org>
+
+ -- Patrick Ouellette <pouelle@debian.org>  Thu, 14 Apr 2005 14:06:32 -0400
+
+ax25-apps (0.0.6-8) unstable; urgency=low
+
+  * Changed maintainer to debian-hams@lists.debian.org
+  * Changed uploaders to Jaime Robles <jaime@debian.org>,
+    Joop Stakenborg <pa3aba@debian.org>,
+    Patrick Ouellette <pouelle@debian.org>,
+    Hamish Moffatt <hamish@debian.org>,
+    Ramakrishnan Muthukrishnan <rkrishnan@debian.org>
+
+ -- Patrick Ouellette <pouelle@debian.org>  Thu, 14 Apr 2005 13:50:35 -0400
+
+ax25-apps (0.0.6-7) unstable; urgency=low
+
+  * fixed typo in description (closes: #299964)
+  * added Czech translation (closes: #297600)
+    (thanks Miroslav Kure <kurem@vychodil.inf.upol.cz>)
+
+ -- Bruce Walker <w1bw@debian.org>  Sat,  2 Apr 2005 13:30:27 -0500
+
+ax25-apps (0.0.6-6) unstable; urgency=low
+
+  * lintian cleanup, fixed changelog charset and quoted menu fields
+
+ -- Bruce Walker <w1bw@debian.org>  Tue, 30 Mar 2004 13:46:46 -0500
+
+ax25-apps (0.0.6-5) unstable; urgency=low
+
+  * added Japanese debconf translations from henrich@samba.gr.jp
+  * closes: #239214
+
+ -- Bruce Walker <w1bw@debian.org>  Mon, 22 Mar 2004 19:29:44 -0500
+
+ax25-apps (0.0.6-4) unstable; urgency=low
+
+  * incorporated better package description (closes #209451)
+  * patched to use gettext for debconf templates (closes #205795)
+  * included french debconf translations (closes #206594)
+  * updated to standards 3.6.1
+  * wrote manpages for ax25rtd, ax25rtctl, and ax25rtd.conf
+  * included copyright reference to debian GPL location
+
+ -- Bruce Walker <w1bw@debian.org>  Tue, 11 Nov 2003 19:38:35 -0500
+
+ax25-apps (0.0.6-3) unstable; urgency=low
+
+  * linked with libax25-0.0.11
+
+ -- Bruce Walker <w1bw@debian.org>  Wed, 23 Apr 2003 17:02:37 -0400
+
+ax25-apps (0.0.6-2) unstable; urgency=low
+
+  * new debian maintainer (me)
+
+ -- Bruce Walker <w1bw@debian.org>  Tue,  8 Apr 2003 16:44:31 -0400
+
+ax25-apps (0.0.6-1) unstable; urgency=low
+
+  * new upstream release
+  * added Russian translation for debconf (closes: #137621)
+    (Thanks Ilgiz Kalmetev <ilgiz@bashtelecom.ru>)
+
+ -- Patrick Ouellette <pouelle@debian.org>  Thu, 21 Mar 2002 16:43:25 -0500
+
+ax25-apps (0.0.5-6) unstable; urgency=low
+
+  * added libtool to build depends (closes: #128624)
+
+ -- Patrick Ouellette <pouelle@debian.org>  Fri, 11 Jan 2002 16:24:13 -0500
+
+ax25-apps (0.0.5-5) unstable; urgency=low
+
+  * removed blank lines in debconf templates file (closes: #127767)
+  * fixed compile errors on non x86 systems in ax25rtd.c and ax25rtctl.c
+    (closes: #127782)
+
+ -- Patrick Ouellette <pouelle@debian.org>  Tue,  8 Jan 2002 00:34:20 -0500
+
+ax25-apps (0.0.5-4) unstable; urgency=low
+
+  * fixed typo in debconf template (closes: #100873)
+  * added Dutch translation for debconf (closes: #100872)
+    (Thanks Joop Stakenborg <pa3aba@debian.org>)
+  * added Spanish translation for debconf (closes: #103237)
+    (Thanks Carlos Valdivia <valyag@teleline.es>)
+  * added Portuguese (Brazilian) translation for debconf (closes: #107489)
+    (Thanks <andrelop@ig.com.br>)
+  * added autoconf to build depends
+  * added automake to build depends
+
+ -- Patrick Ouellette <pouelle@debian.org>  Sat, 22 Dec 2001 23:12:54 -0500
+
+ax25-apps (0.0.5-3) unstable; urgency=low
+
+  * compiled against released version of libax25 (oops - sorry about
+    that) (closes: #96384)
+  * changed Priority from optional to extra
+
+ -- Patrick Ouellette <pouelle@debian.org>  Sat,  5 May 2001 21:27:25 -0500
+
+ax25-apps (0.0.5-2) unstable; urgency=low
+
+  * Fixed problem with dpkg-statoverride killing postinst with exit code
+    2
+
+ -- Patrick Ouellette <pouelle@debian.org>  Thu,  3 May 2001 00:10:06 -0500
+
+ax25-apps (0.0.5-1) unstable; urgency=low
+
+  * new maintainer (closes: 89333)
+  * Added Swedish translation from André Dahlqvist to debconf
+    template for listen (closes: 83538)
+  * Added German translation from Joerg Rieger to debconf
+    template for listen (closes: 84259)
+  * moved from suidmanager to dpkg-statoverride
+  * new upstream release
+
+ -- Patrick Ouellette <pouelle@debian.org>  Tue, 30 Apr 2001 21:09:34 -0500
+
+ax25-apps (0.0.4-2) unstable; urgency=low
+
+  * New standards version
+  * Added debconf thing to ask if you would like listen setuid
+
+ -- Craig Small <csmall@debian.org>  Tue,  2 Jan 2001 14:12:26 +1100
+
+ax25-apps (0.0.4-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Craig Small <csmall@debian.org>  Mon, 23 Aug 1999 12:34:50 +1000
+
+ax25-apps (0.0.3-1) unstable; urgency=low
+
+  * New upstream source Closes: #31744
+
+ -- Craig Small <csmall@debian.org>  Tue, 10 Aug 1999 11:03:07 +1000
+
+ax25-apps (0.0.2-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Craig Small <csmall@debian.org>  Thu,  8 Jul 1999 12:19:45 +1000
+
+ax25-apps (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Craig Small <csmall@debian.org>  Fri,  4 Jun 1999 13:47:48 +1000
+
+Local variables:
+mode: debian-changelog
+End:

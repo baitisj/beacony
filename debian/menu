@@ -1,0 +1,2 @@
+?package(ax25-apps):needs="text" section="Applications/Amateur Radio"\
+  title="Axlisten" command="/usr/bin/axlisten"

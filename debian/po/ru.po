@@ -1,0 +1,41 @@
+# translation of ru.po to Russian
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Yuri Kozlov <yuray@komyakino.ru>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: ru\n"
+"Report-Msgid-Bugs-To: ax25-apps@packages.debian.org\n"
+"POT-Creation-Date: 2010-04-18 19:15+0200\n"
+"PO-Revision-Date: 2009-06-13 09:35+0400\n"
+"Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
+"Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. Type: boolean
+#. Description
+#: ../templates:1001
+msgid "Make listen setuid root?"
+msgstr "Установить на listen setuid-бит?"
+
+#. Type: boolean
+#. Description
+#: ../templates:1001
+msgid ""
+"The listen program needs to make calls as the root user.  One way of doing "
+"this is to make the program setuid root.  This is generally a bad idea as "
+"there are better ways, such as using the sudo program, to do this. However, "
+"you have the option of making it setuid root here if you like."
+msgstr ""
+"Для того, чтобы звонить, программе listen требуется иметь права "
+"суперпользователя. Одним из способов сделать это является установка бита "
+"setuid на исполняемую программу. Обычно, это не очень хороший вариант, есть "
+"другие способы, например, использование программы sudo. Однако, если хотите, "
+"то можете указать установку setuid-бита."

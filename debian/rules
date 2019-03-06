@@ -1,0 +1,95 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# This file is public domain software, originally written by Joey Hess. 
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+
+# This is the debhelper compatibility version to use.
+
+build: build-stamp
+
+build-arch: build
+
+build-indep: build
+
+build-stamp:
+	dh_testdir
+	dh_autoreconf
+	#autoreconf --install --force
+	chmod +x configure
+	# Add here commands to compile the package.
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man --program-transform-name='s@^call@axcall@;s@^listen@axlisten@'
+	dh_auto_build
+#	$(MAKE)
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	# Add here commands to clean up after the build process.
+	[ ! -f Makefile ] || $(MAKE) distclean
+
+	dh_autoreconf_clean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	# Add here commands to install the package into debian/<packagename>
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/ax25-apps
+	$(MAKE) installconf DESTDIR=$(CURDIR)/debian/ax25-apps
+
+binary: binary-arch
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+#	dh_testversion 2
+	dh_testdir
+	dh_testroot
+	dh_installdebconf	
+	dh_installdocs
+# remove extra copying file from doc dir for lintian
+	rm $(CURDIR)/debian/ax25-apps/usr/share/doc/ax25-apps/COPYING.ax25ipd
+	dh_installexamples
+	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+	#dh_installcron
+#	dh_installman
+	#dh_installinfo
+	#dh_undocumented
+	dh_installchangelogs ChangeLog
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	# You may want to make some executables suid here.
+#	dh_suidregister
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb 
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

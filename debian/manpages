@@ -1,0 +1,9 @@
+call/call.1
+listen/listen.1
+ax25ipd/ax25ipd.8
+ax25rtd/ax25rtctl.8
+ax25rtd/ax25rtd.8
+ax25mond/ax25mond.8
+ax25ipd/ax25ipd.conf.5
+ax25rtd/ax25rtd.conf.5
+ax25mond/ax25mond.conf.5
