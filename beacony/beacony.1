@@ -1,0 +1,52 @@
+.TH LISTEN 1 "27 August 1996" Linux "Linux Programmer's Manual"
+.SH NAME
+beacony \- spits out beacons
+.SH SYNOPSIS
+.B listen [-a] [-c] [-p port] [-t] [-v]
+.SH DESCRIPTION
+.LP
+.B Beacony
+uses SOCK_PACKET facilities to provide a network monitor of all AX.25
+beacons heard by the system. The output format consists of
+.LP
+TO <tab> FROM <tab> MESSAGE
+.LP
+Newline characters in the MESSAGE are escaped so that shell scripts can
+deal with them properly.
+.SH OPTIONS
+.TP 10
+.BI \-a
+Allow for the monitoring of outgoing frames as well as incoming ones.
+.TP 10
+.BI \-c
+Enable color support.
+.TP 10
+.BI "\-p port"
+Monitor only those frames received on a particular port, by default all
+AX.25 devices are monitored.
+.TP 10
+.BI \-t
+Displays a timestamp with each packet received.
+.TP 10
+.BI \-v
+Display the version.
+.SH FILES
+/etc/ax25/axports
+.SH BUGS
+.B beacony
+has no bugs.
+Zarro.
+.SH AUTHORS
+.nf
+Jeff Baitis <jeff@baitis.net>
+.br
+Alan Cox GW4PTS <alan@cymru.net>
+.br
+Jonathan Naylor G4KLX <g4klx@g4klx.demon.co.uk>
+.br
+Phil Karn KA9Q <karn@qualcomm.com>
+.br
+Heikki Hannikainen OH7LZB <oh7lzb@sral.fi>
+.br
+Scott Miller N1VG <scott@opentrac.org>
+.fi
