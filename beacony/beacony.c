@@ -29,16 +29,6 @@ int timestamp;
 static int sigint;
 static int sock;
 
-static void display_port(char *dev)
-{
-	char *port;
-
-	if ((port = ax25_config_get_name(dev)) == NULL)
-		port = dev;
-
-	lprintf(T_PORT, "%s: ", port);
-}
-
 void display_timestamp(void)
 {
 	time_t timenowx;
@@ -81,26 +71,14 @@ int main(int argc, char **argv)
 
 	while ((s = getopt(argc, argv, "8achip:rtv")) != -1) {
 		switch (s) {
-		case '8':
-			sevenbit = 0;
-			break;
 		case 'a':
 			proto = ETH_P_ALL;
 			break;
 		case 'c':
 			color = 1;
 			break;
-		case 'h':
-			dumpstyle = HEX;
-			break;
-		case 'i':
-			ibmhack = 1;
-			break;
 		case 'p':
 			port = optarg;
-			break;
-		case 'r':
-			dumpstyle = READABLE;
 			break;
 		case 't':
 			timestamp = 1;
@@ -114,7 +92,7 @@ int main(int argc, char **argv)
 			return 1;
 		case '?':
 			fprintf(stderr,
-				"Usage: listen [-8] [-a] [-c] [-h] [-i] [-p port] [-r] [-t] [-v]\n");
+				"Usage: listen [-a] [-c] [-p port] [-t] [-v]\n");
 			return 1;
 		}
 	}
@@ -188,22 +166,10 @@ int main(int argc, char **argv)
 			if (sock == -1 || sigint)
 				break;
 			if (ifr.ifr_hwaddr.sa_family == AF_AX25) {
-//				display_port(sa.sa_data);
-#ifdef NEW_AX25_STACK
-//				ax25_dump(buffer, size, dumpstyle);
-#else
 				ki_dump(buffer, size, dumpstyle);
-#endif
-/*				lprintf(T_DATA, "\n");  */
 			}
 		} else {
-//			display_port(sa.sa_data);
-#ifdef NEW_AX25_STACK
-//			ax25_dump(buffer, size, dumpstyle);
-#else
 			ki_dump(buffer, size, dumpstyle);
-#endif
-/*                      lprintf(T_DATA, "\n");  */
 		}
 		if (color)
 			refresh();
@@ -229,144 +195,11 @@ static void baitisj_dump(unsigned char *data, int length) {
 		++src;
 		++dst;
 	}
-	//lprintf(T_DATA, "\n");
 	lprintf(T_DATA, "%s\n", buf);
-}
-
-
-static void ascii_dump(unsigned char *data, int length)
-{
-	unsigned char c;
-	int i, j;
-	char buf[100];
-
-	for (i = 0; length > 0; i += 64) {
-		sprintf(buf, "%04X  ", i);
-
-		for (j = 0; j < 64 && length > 0; j++) {
-			c = *data++;
-			length--;
-
-			if ((c != '\0') && (c != '\n'))
-				strncat(buf, &c, 1);
-			else
-				strcat(buf, ".");
-		}
-
-		lprintf(T_DATA, "%s\n", buf);
-	}
-}
-
-static void readable_dump(unsigned char *data, int length)
-{
-	unsigned char c;
-	int i;
-	int cr = 1;
-	char buf[BUFSIZE];
-
-	for (i = 0; length > 0; i++) {
-
-		c = *data++;
-		length--;
-
-		switch (c) {
-		case 0x00:
-			buf[i] = ' ';
-		case 0x0A:	/* hum... */
-		case 0x0D:
-			if (cr)
-				buf[i] = '\n';
-			else
-				i--;
-			break;
-		default:
-			buf[i] = c;
-		}
-		cr = (buf[i] != '\n');
-	}
-	if (cr)
-		buf[i++] = '\n';
-	buf[i++] = '\0';
-	lprintf(T_DATA, "%s", buf);
-}
-
-static void hex_dump(unsigned char *data, int length)
-{
-	int i, j, length2;
-	unsigned char c;
-	char *data2;
-
-	char buf[4], hexd[49], ascd[17];
-
-	length2 = length;
-	data2 = data;
-
-	for (i = 0; length > 0; i += 16) {
-
-		hexd[0] = '\0';
-		for (j = 0; j < 16; j++) {
-			c = *data2++;
-			length2--;
-
-			if (length2 >= 0)
-				sprintf(buf, "%2.2X ", c);
-			else
-				strcpy(buf, "   ");
-			strcat(hexd, buf);
-		}
-
-		ascd[0] = '\0';
-		for (j = 0; j < 16 && length > 0; j++) {
-			c = *data++;
-			length--;
-
-			sprintf(buf, "%c",
-				((c != '\0') && (c != '\n')) ? c : '.');
-			strcat(ascd, buf);
-		}
-
-		lprintf(T_DATA, "%04X  %s | %s\n", i, hexd, ascd);
-	}
 }
 
 void data_dump(unsigned char *data, int length, int dumpstyle)
 {
-	switch (dumpstyle) {
-
-	case READABLE:
-		readable_dump(data, length);
-		break;
-	case HEX:
-		hex_dump(data, length);
-		break;
-	default:
-		//ascii_dump(data, length);
-		baitisj_dump(data, length);
-	}
+	baitisj_dump(data, length);
 }
 
-int get16(unsigned char *cp)
-{
-	int x;
-
-	x = *cp++;
-	x <<= 8;
-	x |= *cp++;
-
-	return (x);
-}
-
-int get32(unsigned char *cp)
-{
-	int x;
-
-	x = *cp++;
-	x <<= 8;
-	x |= *cp++;
-	x <<= 8;
-	x |= *cp++;
-	x <<= 8;
-	x |= *cp;
-
-	return (x);
-}
