@@ -5,6 +5,11 @@ I removed a lot of stuff and what's behind is this program.
 It listens to the AX25 interface and poops out beacons.
 And that's all it does!
 
+There's a script here that will `write` the output of the
+beacon to your terminal which is the author's intended
+usage case:
+    sudo beacony/beacony | python beaconwriter.py
+
 To build:
 autoreconf -fi
 ./configure
