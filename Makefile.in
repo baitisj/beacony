@@ -98,7 +98,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = ax25-apps.spec
+CONFIG_CLEAN_FILES = beacony.spec
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -157,10 +157,10 @@ ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
 DIST_SUBDIRS = $(SUBDIRS)
-am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/ax25-apps.spec.in \
+am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/beacony.spec.in \
 	$(srcdir)/config.h.in AUTHORS COPYING ChangeLog INSTALL NEWS \
-	README compile config.guess config.sub install-sh ltmain.sh \
-	missing
+	README TODO compile config.guess config.sub install-sh \
+	ltmain.sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -324,7 +324,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = beacony
-EXTRA_DIST = pathnames.h ax25-apps.spec
+EXTRA_DIST = pathnames.h beacony.spec
 AX25_SYSCONFDIR = $(sysconfdir)/ax25
 AX25_LOCALSTATEDIR = $(localstatedir)/ax25
 AM_CPPFLAGS = -DAX25_SYSCONFDIR=\""$(AX25_SYSCONFDIR)"\" \
@@ -382,7 +382,7 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-ax25-apps.spec: $(top_builddir)/config.status $(srcdir)/ax25-apps.spec.in
+beacony.spec: $(top_builddir)/config.status $(srcdir)/beacony.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:

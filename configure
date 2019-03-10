@@ -13020,7 +13020,7 @@ extraver=$(echo $PACKAGE_VERSION | sed -e 's@[^-]*-@@' -e 's@-@_@')
 EXTRAVERSION=$extraver
 
 
-ac_config_files="$ac_config_files beacony/Makefile Makefile ax25-apps.spec"
+ac_config_files="$ac_config_files beacony/Makefile Makefile beacony.spec"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -14035,7 +14035,7 @@ do
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "beacony/Makefile") CONFIG_FILES="$CONFIG_FILES beacony/Makefile" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "ax25-apps.spec") CONFIG_FILES="$CONFIG_FILES ax25-apps.spec" ;;
+    "beacony.spec") CONFIG_FILES="$CONFIG_FILES beacony.spec" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

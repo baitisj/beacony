@@ -64,5 +64,5 @@ AC_SUBST(BASEVERSION, [$basever])
 extraver=$(echo $PACKAGE_VERSION | sed -e 's@@<:@^-@:>@*-@@' -e 's@-@_@')
 AC_SUBST(EXTRAVERSION, [$extraver])
 
-AC_CONFIG_FILES([beacony/Makefile Makefile ax25-apps.spec])
+AC_CONFIG_FILES([beacony/Makefile Makefile beacony.spec])
 AC_OUTPUT

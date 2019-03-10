@@ -1,6 +1,6 @@
 SUBDIRS = beacony
 
-EXTRA_DIST = pathnames.h ax25-apps.spec
+EXTRA_DIST = pathnames.h beacony.spec
 
 installconf:
 	@for app in $(SUBDIRS); do $(MAKE) -C $$app installconf; done
